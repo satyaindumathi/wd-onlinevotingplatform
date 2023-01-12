@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>" />
+    <link href="./css/style.css" rel="stylesheet">
+    <title>ONLINE VOTING PLATFORM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <!--home page-->
+    <div class="grid grid-cols-6">
+        <div class=" col-start-3 col-span-2">
+            <a href="/" class="hover:text-blue-400"><%- include('header.ejs') %> </a>
+                <p>WELCOME TO ONLINE VOTING PLATFORM</p>
+                <p>Don't have signedup Yet <a href="/signup" class="text-red-400">SignUp Now</a></p>
+                <p>Already had an account here<a href="/login" class="text-blue-400"> Login Now</a></p>
+        </div>
+    </div>
+</body>
+</html>
