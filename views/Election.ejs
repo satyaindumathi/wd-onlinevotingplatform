@@ -14,11 +14,17 @@
       <h3 class="text-2xl">Welcome to Election page<%= userName %></h3>
       <% if (elections.length==0) { %>
        <p>You have zero elections upto now,Start Creating  your elections here.
-      <a href="CreateElection.ejs">Discover Your Election here</a>
+      <a href="Election/Create">Discover Your Election here</a>
        </p>
       <% } else{ %>
-        <p><%=elections[0].electionName %></p>
-      <% } %> 
+        <p class="text-pink-400"><%=elections[0].electionName %></p>
+        <% } %> 
+      </div>
+      <div class="flex gap-2 py-4 justify-between">
+        <div class="bg-red-700 rounded w-fit px-2 py-1 hover:bg-red-500">
+            <a href="/Election/Create" class="text-gray">+ Create a new election</a>
+        </div>
     </div>
-  </body>
-</html>
+    </body>
+  </html>
+  
