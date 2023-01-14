@@ -46,7 +46,7 @@ test("signup", async () => {
         password: "18182-EE-008",
         _csrf: csrfToken,
     });
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toBe(302);
 })
 });
 

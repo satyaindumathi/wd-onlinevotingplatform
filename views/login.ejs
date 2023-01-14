@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>LOGIN PAGE</title>
     <style>
@@ -23,7 +24,8 @@
                 </h2>
                 <div class="divide-y  divide-white-300/50">
                     <div class="space-y-6 text-base leading-7 text-gray-600">
-                        <form action="/" id="user_form">
+                        <form action="/session" method="post">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <label for="mail"
                                 class="text-md w-40 inline-block font-medium leading-3 text-white-700">Email</label>
                             <input required type="email" id="mail" name="Email"

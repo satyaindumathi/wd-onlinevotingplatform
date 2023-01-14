@@ -53,7 +53,7 @@ passport.use(
     (username, password, done) => {
       Admin.findOne({ where: { email: username } })
         .then(async (user) => {
-          const result = await bcrypt.compare(password, user.password);
+          const result = await bcrypt.compare(password, user.Password);
           if (result) {
             return done(null, user);
           } else {
@@ -96,7 +96,7 @@ app.post("/admin", async (request, response) => {
       FirstName: request.body.FirstName,
       LastName: request.body.LastName,
       Email: request.body.Email,
-      password: hashedPwd,
+      Password: hashedPwd,
     });
     request.login(admin, (err) => {
       if (err) {
@@ -158,12 +158,12 @@ app.get(
   async (request, response) => {
     let userName = request.user.firstName + " " + request.user.lastName;
     try {
-      const Election = await Election.getAllElections(request.user.id);
+      const elections = await Election.getAllElections(request.user.id);
       if (request.accepts("html")) {
         response.render("Election", {
           title: "Online voting platform",
           userName,
-          Election,
+          elections,
           csrfToken: request.csrfToken(),
         });
       } else {
@@ -174,7 +174,7 @@ app.get(
       return response.status(422).json(error);
     }
   },
-  app.get("/Election/CreateElection",connectEnsureLogin.ensureLoggedIn(),async (request,response)=>{
+  app.get("/Election/Create",connectEnsureLogin.ensureLoggedIn(),async (request,response)=>{
     response.render("CreateElection",{
         title:"New Election",
         csrfToken:request.csrfToken(),

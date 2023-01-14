@@ -14,10 +14,10 @@
       <h3 class="text-2xl">Welcome to Election page<%= userName %></h3>
       <% if (elections.length==0) { %>
        <p>You have zero elections upto now,Start Creating  your elections here.
-      <a href="Election/Create">Discover Your Election here</a>
+      <a href="/Election/Create">Discover Your Election here</a>
        </p>
       <% } else{ %>
-        <p class="text-pink-400"><%=elections[0].electionName %></p>
+        <p class="text-pink-400"><%=elections[0].ElectiontName %></p>
         <% } %> 
       </div>
       <div class="flex gap-2 py-4 justify-between">
