@@ -47,11 +47,11 @@ app.use(passport.session());
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "email",
-      passwordField: "password",
+      usernameField: "Email",
+      passwordField: "Password",
     },
     (username, password, done) => {
-      Admin.findOne({ where: { email: username } })
+      Admin.findOne({ where: { Email: username } })
         .then(async (user) => {
           const result = await bcrypt.compare(password, user.Password);
           if (result) {
@@ -80,7 +80,9 @@ passport.deserializeUser((id, done) => {
     });
 });
 app.get("/login", (request, response) => {
-  response.render("login", { title: "Login", csrfToken: request.csrfToken() });
+  response.render("login", {
+    title: "Login",
+   csrfToken: request.csrfToken() });
 });
 app.get("/signup", (request, response) => {
   response.render("signup", {

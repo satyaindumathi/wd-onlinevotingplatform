@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-    <div class="relative flex min-h-screen flex-col jsutify-center overflow-hidden py-6 bg-white-50 ">
+    <div class="relative flex min-h-screen flex-col justify-center overflow-hidden py-6 bg-white-50 ">
         <div
             class="relative bg-gray px-6 pb-5 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:rounded-lg sm:px-10">
             <div class="mx-auto max-w-md">
@@ -26,9 +26,9 @@
                     <div class="space-y-6 text-base leading-7 text-gray-600">
                         <form action="/session" method="post">
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                            <label for="mail"
+                            <label for="email"
                                 class="text-md w-40 inline-block font-medium leading-3 text-white-700">Email</label>
-                            <input required type="email" id="mail" name="Email"
+                            <input required type="email" id="email" name="Email"
                                 class="bg-white-100 inline-block rounded-lg shadow-md py-3 px-4 mb-5 text-base leading-6 placeolder-gray-500"
                                 placeholder="Enter your registered Email."><br />
                             <label for="pswd" class="text-md w-40 inline-block font-medium leading-5 text-gray-700">
