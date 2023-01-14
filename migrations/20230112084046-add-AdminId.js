@@ -9,15 +9,15 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.addColumn("Election","AdminId", {
+    await queryInterface.addColumn("Elections","AdminId", {
       type:Sequelize.DataTypes.INTEGER,
     });
-    await queryInterface.addConstraint("Election",{
+    await queryInterface.addConstraint("Elections",{
       fields:["AdminId"],
       type:"foreign key",
       references:{
-        table:"Admin",
-        field:"Id"
+        table:"Admins",
+        field:"id"
       },
     })
   },
