@@ -3,7 +3,7 @@ const express = require("express");
 var csrf = require("tiny-csrf");
 var cookieParser = require("cookie-parser");
 const app = express();
-const { Admin, Election } = require("./models");
+const { Admin, Election,Question,Option,Voter } = require("./models");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
@@ -19,6 +19,7 @@ const path = require("path");
 // eslint-disable-next-line no-undef
 app.use(express.static(path.join(__dirname, "public")));
 const flash = require("connect-flash");
+
 // eslint-disable-next-line no-undef
 app.set("views", path.join(__dirname, "views"));
 app.use(flash());
@@ -93,6 +94,10 @@ app.get("/signup", (request, response) => {
 app.post("/admin", async (request, response) => {
   const hashedPwd = await bcrypt.hash(request.body.password, saltRounds);
   console.log(hashedPwd);
+  if(request.body.password.length<8){
+    request.flash("error","Password should contain atleast of length 8");
+    response.redirect("/signup")
+  }
   try {
     const admin = await Admin.create({
       FirstName: request.body.FirstName,
@@ -176,11 +181,85 @@ app.get(
       return response.status(422).json(error);
     }
   },
-  app.get("/Election/Create",connectEnsureLogin.ensureLoggedIn(),async (request,response)=>{
-    response.render("CreateElection",{
-        title:"New Election",
-        csrfToken:request.csrfToken(),
-    })
-  }),
-);
+),
+
+  app.get("/Election/:id",connectEnsureLogin.ensureLoggedIn(),async(request,response)=>{
+    const Election= await Election.getElectionWithId(request.params.id);
+    const questionsCount=await Question.countOFQuestions(request.params.id);
+    const votersCount=await Voter.countOFVoters(request.params.id);
+    console.log(questionsCount)
+   return response.render("Question",{
+      id:request.params.id,
+      title:Election.ElectionName,
+      csrfToken:request.csrfToken(),
+      QuestionsC:questionsCount,
+      votersC:votersCount,
+      CustomURL:Election.CustomURL,
+    }) 
+}),
+app.get("/Election/:id/NewQuestion",connectEnsureLogin.ensureLoggedIn(),async(request,response)=>{
+  
+    const Election=await Election.getElectionWithId(request.params.id);
+    const Question=await Question.getQuestionWithId(request.params.id);
+    if(Election.isRunning==false){
+      if(request.accepts("html")){
+        return response.render("NewQuestion",{
+          title:Election.ElectionName,
+          Question:Question,
+          csrfToken:request.csrfToken(),
+          id:request.params.id,
+        })
+      }
+      else{
+        return response.json({Question})
+      }
+    }
+    else{
+      request.flash("error","Cannot access questions while election is running");
+      return response.redirect('/Electin/${id}')
+    }
+  
+  // catch(error){
+  //   return response.status(422).json(error)
+  // }
+
+});
+app.get("/elections/:id/newquestion/create",connectEnsureLogin.ensureLoggedIn(),async(request,response)=>{
+  return response.render("Create-question",{
+    id: request.params.id,
+    csrfToken:request.csrfToken()
+  })
+})
+app.get("/Election/Create",connectEnsureLogin.ensureLoggedIn(),async (request,response)=>{
+  response.render("CreateElection",{
+      title:"New Election",
+      csrfToken:request.csrfToken(),
+  })
+
+})
+app.post("/Election/:id/NewQuestion/Create",connectEnsureLogin.ensureLoggedIn(),async(request,response)=>{
+  const enteredQuestion=(request.body.question).trim()
+  if(enteredQuestion.length==0){
+    request.flash("error","Question should be something not null")
+    return response.redirect(`/Election/${request.params.id}/NewQuestion/Create`)
+  }
+
+  try{
+    const question=request.body.question;
+    const description=request.body.description;
+    const electionId=request.params.id
+    await Question.addNewQuestion({
+      question,
+      description,
+      electionId,
+    });
+  return response.redirect(`/election/${request.params.id}`)
+  }
+  catch(error){
+    request.flash("error",error)
+    return response.redirect(`/Election/${request.params.id}/NewQuestion/Create`)
+
+  } 
+})
+
 module.exports = app;
