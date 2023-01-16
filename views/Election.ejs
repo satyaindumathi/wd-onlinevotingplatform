@@ -20,8 +20,8 @@
       <p class="text-2xl px-3 py-4">Your Elections are:</p>
       <% for(var i=0; i<elections.length; i++) {%>
        
-            <a href="/Election/<%= elections[i].id %>" class="px-3 text-xl hover:text-yellow-300">
-            <%= i+1 %> .<%=elections[i].electionName %>
+            <a href="/elections/<%= elections[i].id %>" class="px-3 text-xl hover:text-yellow-300">
+            <%= i+1 %> .<%=elections[i].ElectiontName %>
             </a>
        
      <% } %>

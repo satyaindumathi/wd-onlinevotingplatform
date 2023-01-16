@@ -4,7 +4,7 @@ const { Sequelize} =require('../models');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.addColumn("Option","questionId",{
+    await queryInterface.addColumn("Options","questionId",{
       type:Sequelize.DataTypes.INTEGER,
       onDelete:"CASCADE",
     })
@@ -14,19 +14,19 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.addColumn("Option",{
+    await queryInterface.addConstraint("Options",{
       fields:["questionId"],
       type:"foreign key",
       onDelete:"CASCADE",
       references:{
-        table:"Question",
+        table:"Questions",
         field:"id",
       }
     })
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.removeColumn("Option","questionId")
+    await queryInterface.removeColumn("Options","questionId")
     /**
      * Add reverting commands here.
      *

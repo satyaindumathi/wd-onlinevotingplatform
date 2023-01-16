@@ -40,6 +40,17 @@ static getAllElections(AdminId)
     order:[["id","ASC"]],
   });
 }
+static getElectionWithId(id) 
+{
+  return this.findOne
+   ({
+    where:
+     {
+      id,
+    },
+    order:[["id","ASC"]],
+  });
+}
    }
 
   Election.init

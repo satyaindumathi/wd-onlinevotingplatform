@@ -95,7 +95,7 @@ app.post("/admin", async (request, response) => {
   const hashedPwd = await bcrypt.hash(request.body.password, saltRounds);
   console.log(hashedPwd);
   if(request.body.password.length<8){
-    request.flash("error","Password should contain atleast of length 8");
+    request.flash("error","Password should contain atleast of length 10");
     response.redirect("/signup")
   }
   try {
@@ -183,18 +183,18 @@ app.get(
   },
 ),
 
-  app.get("/Election/:id",connectEnsureLogin.ensureLoggedIn(),async(request,response)=>{
-    const Election= await Election.getElectionWithId(request.params.id);
+  app.get("/elections/:id",connectEnsureLogin.ensureLoggedIn(),async(request,response)=>{
+    const election= await Election.getElectionWithId(request.params.id);
     const questionsCount=await Question.countOFQuestions(request.params.id);
     const votersCount=await Voter.countOFVoters(request.params.id);
     console.log(questionsCount)
    return response.render("Question",{
       id:request.params.id,
-      title:Election.ElectionName,
+      title:election.ElectionName,
       csrfToken:request.csrfToken(),
       QuestionsC:questionsCount,
       votersC:votersCount,
-      CustomURL:Election.CustomURL,
+      CustomURL:election.CustomURL,
     }) 
 }),
 app.get("/Election/:id/NewQuestion",connectEnsureLogin.ensureLoggedIn(),async(request,response)=>{
@@ -216,15 +216,13 @@ app.get("/Election/:id/NewQuestion",connectEnsureLogin.ensureLoggedIn(),async(re
     }
     else{
       request.flash("error","Cannot access questions while election is running");
-      return response.redirect('/Electin/${id}')
+      return response.redirect(`/election/${request.params.id}`)
     }
   
-  // catch(error){
-  //   return response.status(422).json(error)
-  // }
+ 
 
 });
-app.get("/elections/:id/newquestion/create",connectEnsureLogin.ensureLoggedIn(),async(request,response)=>{
+app.get("/Election/:id/NewQuestion/Create",connectEnsureLogin.ensureLoggedIn(),async(request,response)=>{
   return response.render("Create-question",{
     id: request.params.id,
     csrfToken:request.csrfToken()
@@ -253,7 +251,7 @@ app.post("/Election/:id/NewQuestion/Create",connectEnsureLogin.ensureLoggedIn(),
       description,
       electionId,
     });
-  return response.redirect(`/election/${request.params.id}`)
+  return response.redirect(`/Election/${request.params.id}`)
   }
   catch(error){
     request.flash("error",error)
