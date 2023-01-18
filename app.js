@@ -3,7 +3,7 @@ const express = require("express");
 var csrf = require("tiny-csrf");
 var cookieParser = require("cookie-parser");
 const app = express();
-const { Admin, Election, Question, Option, Voter } = require("./models");
+const { Admin, Election, Question, Voter } = require("./models");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
@@ -281,5 +281,12 @@ app.post(
     }
   }
 );
-
+app.get("/signout", (request, response, next) => {
+  request.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    response.redirect("/");
+});
+});
 module.exports = app;

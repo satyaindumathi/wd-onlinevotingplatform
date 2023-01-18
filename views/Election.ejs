@@ -8,9 +8,13 @@
     <title><%= title %></title>
   </head>
   <body>
-    <div><%- include('header.ejs') %></div>
+    <div class="px-3 py-3"><%- include('header.ejs') %></div>
     <div>
-      <h3 class="text-2xl">Welcome to Election page<%= userName %></h3>
+      <a href="/signout" class="justify-between hover:bg-green-400 text-black-600 my-10 font-semibold hover:text-gray py-2 px-3 border border-green-600 rounded">
+             SIGNOUT</a>
+      </div>
+    <div>
+      <h3 class="text-2xl px-2 py-3">Welcome to Election page<%= userName %></h3>
       <% if (elections.length==0) { %>
        <p>You have zero elections upto now,Start Creating  your elections here.</p>
       <a href="/Election/Create">Discover Your Election here</a>
@@ -24,11 +28,12 @@
             </a>
      <% } %>
      <% } %>
-  </div>
-  <div class="flex gap-2 py-4 justify-between">
+  </div><br>
+  <div class="flex gap-2 py-2 justify-between">
     <div class="bg-blue-700 rounded w-fit px-2 py-1 hover:bg-blue-500">
-        <a href="/Election/Create" class="text-gray">+ Create Your New Election Here</a>
+        <a href="/Election/Create" class="text-gray">+ Create Your New Election Here</a><br>
     </div>
+   
 </div>
 </body>
 </html>
