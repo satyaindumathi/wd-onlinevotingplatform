@@ -20,11 +20,11 @@ module.exports = (sequelize, DataTypes) =>
         foreignKey:"AdminId",
       });
     }
-  static addElection({ElectionName,AdminId,CustomURL }) 
+  static addElection({ElectiontName,CustomURL,AdminId }) 
   {
     return this.create
     ({
-      ElectionName,
+      ElectiontName,
       CustomURL,
       AdminId,
     });

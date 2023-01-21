@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="<%= csrfToken %>" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title><%= title %></title>
   </head>
@@ -11,8 +12,15 @@
     <div class="px-3 py-3"><%- include('header.ejs') %></div>
     <div>
       <a href="/signout" class="justify-between hover:bg-green-400 text-black-600 my-10 font-semibold hover:text-gray py-2 px-3 border border-green-600 rounded">
-             SIGNOUT</a>
+        SIGNOUT</a>
       </div>
+      <div>
+        <% if(messages && messages.error && messages.error.length > 0)  { %>
+            <% for(var i=0; i<messages.error.length; i++) { %>
+                    <li class="text-gray rounded px-4 py-4 bg-pink-500"> <%= messages.error[i] %></li>
+            <% } %>
+          <% } %>
+    </div>
     <div>
       <h3 class="text-2xl px-2 py-3">Welcome to Election page<%= userName %></h3>
       <% if (elections.length==0) { %>
@@ -24,7 +32,7 @@
       <% for(var i=0; i<elections.length; i++) {%>
        
             <a href="/elections/<%= elections[i].id %>" class="px-3 text-xl hover:text-yellow-300">
-            <%= i+1 %> .<%=elections[i].ElectionName %>
+            <%= i+1 %> .<%=elections[i].ElectiontName %>
             </a>
      <% } %>
      <% } %>

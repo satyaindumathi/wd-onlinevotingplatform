@@ -141,10 +141,10 @@ app.post(
 
     try {
       await Election.addElection({
-        ElectionName: request.body.ElectionName,
+        ElectiontName: request.body.ElectionName,
         CustomURL: request.body.CustomURL,
-        csrfToken: request.csrfToken(),
         AdminId: request.user.id,
+
       });
       return response.redirect("/Election");
     } catch (error) {
@@ -171,6 +171,7 @@ app.get(
     let userName = request.user.firstName + " " + request.user.lastName;
     try {
       const elections = await Election.getAllElections(request.user.id);
+      // console.log(elections[0].ElectiontName + "eygduighweuidhuih");
       if (request.accepts("html")) {
         response.render("Election", {
           title: "Online voting platform",
@@ -191,17 +192,17 @@ app.get(
     "/elections/:id",
     connectEnsureLogin.ensureLoggedIn(),
     async (request, response) => {
-      const election = await Election.getElectionWithId(request.params.id);
+      const elections = await Election.getElectionWithId(request.params.id);
       const questionsCount = await Question.countOFQuestions(request.params.id);
       const votersCount = await Voter.countOFVoters(request.params.id);
       console.log(questionsCount);
       return response.render("Question", {
         id: request.params.id,
-        title: election.ElectionName,
+        title: elections.ElectionName,
         csrfToken: request.csrfToken(),
         QuestionsC: questionsCount,
         votersC: votersCount,
-        CustomURL: election.CustomURL,
+        CustomURL: elections.CustomURL,
       });
     }
   ),
@@ -209,12 +210,12 @@ app.get(
     "/Election/:id/NewQuestion",
     connectEnsureLogin.ensureLoggedIn(),
     async (request, response) => {
-      const Election = await Election.getElectionWithId(request.params.id);
+      const election = await Election.getElectionWithId(request.params.id);
       const Question = await Question.getQuestionWithId(request.params.id);
       if (Election.isRunning == false) {
         if (request.accepts("html")) {
           return response.render("NewQuestion", {
-            title: Election.ElectionName,
+            title: election.ElectiontName,
             Question: Question,
             csrfToken: request.csrfToken(),
             id: request.params.id,
